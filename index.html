@@ -1,0 +1,1037 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SA Connect · futuristic directory</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,600;14..32,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: radial-gradient(circle at 30% 10%, #0b1120, #030614);
+      font-family: 'Inter', sans-serif;
+      color: #eef5ff;
+      line-height: 1.5;
+      padding: 2rem 1.5rem 4rem;
+      min-height: 100vh;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(0, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 255, 255, 0.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .glow-text { text-shadow: 0 0 8px #00e0ff, 0 0 20px #00b3ff; }
+
+    .app-wrapper {
+      max-width: 1400px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* HEADER */
+    .header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 2rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid rgba(0, 255, 255, 0.25);
+      box-shadow: 0 10px 30px -15px rgba(0, 255, 255, 0.2);
+    }
+
+    .logo h1 {
+      font-size: 2.2rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      background: linear-gradient(135deg, #a0f0ff, #7a9eff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo i { color: #00e0ff; filter: drop-shadow(0 0 12px #00e0ff); }
+
+    .badge {
+      background: rgba(0, 224, 255, 0.12);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(0, 255, 255, 0.4);
+      border-radius: 40px;
+      padding: 0.3rem 1rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: #a0f0ff;
+    }
+
+    /* HERO BANNER */
+    .hero-banner {
+      position: relative;
+      height: 240px;
+      border-radius: 40px;
+      overflow: hidden;
+      margin-bottom: 2rem;
+      border: 1px solid rgba(0, 255, 255, 0.3);
+      box-shadow: 0 20px 50px -20px #00b3ff60;
+      background: linear-gradient(135deg, #0a1a30, #0d2440);
+    }
+
+    .hero-banner img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0;
+      transition: opacity 1s ease;
+      display: block;
+    }
+
+    .hero-banner img.loaded { opacity: 0.6; }
+
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, #030614 15%, transparent 60%, #03061480);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 0 3rem;
+      z-index: 3;
+    }
+
+    .hero-overlay h2 {
+      font-size: 2.4rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, #ffffff, #7ad4ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 0.5rem;
+      letter-spacing: -0.02em;
+    }
+
+    .hero-overlay p {
+      color: #b8d4e8;
+      font-size: 1rem;
+      max-width: 500px;
+    }
+
+    .hero-loader {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 40px;
+      height: 40px;
+      border: 3px solid #00e0ff30;
+      border-top: 3px solid #00e0ff;
+      border-radius: 50%;
+      animation: spin 0.9s linear infinite;
+      z-index: 5;
+    }
+
+    /* CONTROLS */
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.2rem;
+      margin-bottom: 2rem;
+      align-items: center;
+      background: rgba(8, 20, 40, 0.7);
+      backdrop-filter: blur(12px);
+      padding: 1.25rem 1.5rem;
+      border-radius: 60px;
+      border: 1px solid rgba(0, 255, 255, 0.25);
+      box-shadow: 0 15px 35px -10px rgba(0, 180, 255, 0.3);
+    }
+
+    .search-box {
+      flex: 2;
+      min-width: 220px;
+      display: flex;
+      align-items: center;
+      background: rgba(0, 30, 60, 0.8);
+      border-radius: 40px;
+      padding: 0.2rem 0.2rem 0.2rem 1.2rem;
+      border: 1px solid #2a5f7a;
+      transition: all 0.2s;
+    }
+
+    .search-box:focus-within {
+      border-color: #00e0ff;
+      box-shadow: 0 0 20px rgba(0, 224, 255, 0.4);
+    }
+
+    .search-box i { color: #7aa9d0; margin-right: 8px; }
+
+    .search-box input {
+      width: 100%;
+      background: transparent;
+      border: none;
+      padding: 0.8rem 0;
+      font-size: 1rem;
+      color: #eef5ff;
+      outline: none;
+    }
+
+    .search-box input::placeholder { color: #6b8ba0; }
+
+    .filter-group { display: flex; gap: 0.8rem; flex-wrap: wrap; }
+
+    .filter-select {
+      background: rgba(0, 30, 60, 0.8);
+      border: 1px solid #2a5f7a;
+      border-radius: 40px;
+      padding: 0.8rem 1.8rem 0.8rem 1.2rem;
+      color: #eef5ff;
+      font-size: 0.95rem;
+      font-weight: 500;
+      cursor: pointer;
+      outline: none;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2300e0ff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 1rem center;
+      background-size: 1rem;
+      min-width: 180px;
+      transition: 0.2s;
+    }
+
+    .filter-select:hover, .filter-select:focus {
+      border-color: #00e0ff;
+      box-shadow: 0 0 16px rgba(0, 224, 255, 0.3);
+    }
+
+    /* RESULTS META */
+    .results-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      color: #8bb6d6;
+      font-weight: 500;
+      font-size: 0.95rem;
+      padding: 0 0.5rem;
+    }
+
+    .fav-badge { display: flex; align-items: center; gap: 10px; }
+
+    .fav-count {
+      background: #00e0ff20;
+      border: 1px solid #00e0ff60;
+      padding: 0.25rem 0.9rem;
+      border-radius: 20px;
+      color: #a0f0ff;
+      font-weight: 600;
+    }
+
+    /* GRID */
+    .directory-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+      gap: 1.8rem;
+      margin-bottom: 3rem;
+    }
+
+    .card {
+      background: rgba(10, 25, 45, 0.75);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(0, 180, 255, 0.3);
+      border-radius: 28px;
+      overflow: hidden;
+      transition: all 0.25s ease;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 15px 30px -15px #00000080;
+      animation: fadeIn 0.4s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .card:hover {
+      border-color: #00e0ff;
+      box-shadow: 0 0 30px rgba(0, 224, 255, 0.3);
+      transform: translateY(-4px);
+    }
+
+    /* CARD IMAGE */
+    .card-image-wrap {
+      position: relative;
+      width: 100%;
+      height: 180px;
+      overflow: hidden;
+      background: linear-gradient(135deg, #0a1a30, #0d2440);
+    }
+
+    .card-image-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0;
+      transform: scale(1.05);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+      display: block;
+      position: relative;
+      z-index: 1;
+    }
+
+    .card-image-wrap img.loaded {
+      opacity: 0.95;
+      transform: scale(1);
+    }
+
+    .card:hover .card-image-wrap img.loaded {
+      transform: scale(1.08);
+    }
+
+    .card-image-wrap::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, transparent 40%, rgba(10, 25, 45, 0.95) 100%);
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .img-loader {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 32px;
+      height: 32px;
+      border: 3px solid #00e0ff30;
+      border-top: 3px solid #00e0ff;
+      border-radius: 50%;
+      animation: spin 0.9s linear infinite;
+      z-index: 3;
+    }
+
+    .img-fallback {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background: linear-gradient(135deg, #0d2440, #1a3a5c);
+      color: #7ab3d4;
+      font-size: 0.8rem;
+      font-weight: 500;
+      z-index: 0;
+    }
+
+    .img-fallback i {
+      font-size: 2rem;
+      color: #00e0ff80;
+    }
+
+    .card-body {
+      padding: 1.4rem 1.6rem 1.6rem;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      position: relative;
+      z-index: 3;
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 0.9rem;
+    }
+
+    .card-category {
+      background: #00e0ff20;
+      border: 1px solid #00e0ff60;
+      border-radius: 30px;
+      padding: 0.2rem 0.9rem;
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #a0f0ff;
+    }
+
+    .fav-btn {
+      background: transparent;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: #3d5a73;
+      transition: 0.2s;
+      padding: 0.2rem;
+      line-height: 1;
+    }
+
+    .fav-btn i { transition: 0.2s; }
+
+    .fav-btn.active i {
+      color: #ffc107;
+      filter: drop-shadow(0 0 10px #ffc107);
+    }
+
+    .fav-btn:hover i {
+      color: #ffc107;
+      transform: scale(1.15);
+    }
+
+    .card-title {
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin: 0.25rem 0 0.5rem;
+      color: #ffffff;
+      letter-spacing: -0.01em;
+      line-height: 1.3;
+    }
+
+    .card-location {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: #7ab3d4;
+      font-size: 0.9rem;
+      margin-bottom: 1rem;
+    }
+
+    .card-location i { color: #00e0ff; font-size: 0.8rem; }
+
+    .card-desc {
+      color: #b8d0e0;
+      font-size: 0.94rem;
+      flex: 1;
+      opacity: 0.9;
+    }
+
+    /* STATES */
+    .state-message {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 4rem 2rem;
+      background: rgba(10, 30, 50, 0.5);
+      border-radius: 40px;
+      border: 1px dashed #2a5f7a;
+      backdrop-filter: blur(4px);
+      color: #9bc2db;
+      font-size: 1.15rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .state-message i {
+      font-size: 3rem;
+      color: #00e0ff80;
+      margin-bottom: 0.5rem;
+    }
+
+    .loading-spinner {
+      width: 48px;
+      height: 48px;
+      border: 4px solid #00e0ff30;
+      border-top: 4px solid #00e0ff;
+      border-radius: 50%;
+      animation: spin 0.9s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    /* CONTACT */
+    .contact-section {
+      background: rgba(8, 22, 40, 0.8);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(0, 224, 255, 0.25);
+      border-radius: 40px;
+      padding: 2.5rem 2rem;
+      margin-top: 2rem;
+      box-shadow: 0 20px 40px -20px #00b3ff30;
+    }
+
+    .section-title {
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      background: linear-gradient(135deg, #b0e0ff, #7a9eff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      display: inline-block;
+    }
+
+    .contact-sub { color: #7aa9c4; margin-bottom: 1.8rem; font-size: 0.98rem; }
+
+    .contact-form {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+
+    .form-group { display: flex; flex-direction: column; gap: 6px; }
+    .form-group.full-width { grid-column: 1 / -1; }
+
+    .form-group label {
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #9bc2db;
+    }
+
+    .form-group input, .form-group textarea {
+      background: rgba(0, 20, 40, 0.7);
+      border: 1px solid #2a5f7a;
+      border-radius: 18px;
+      padding: 1rem 1.2rem;
+      font-size: 1rem;
+      color: #eef5ff;
+      font-family: 'Inter', sans-serif;
+      transition: 0.2s;
+      outline: none;
+    }
+
+    .form-group input:focus, .form-group textarea:focus {
+      border-color: #00e0ff;
+      box-shadow: 0 0 20px rgba(0, 224, 255, 0.2);
+    }
+
+    .form-group textarea { resize: vertical; min-height: 110px; }
+
+    .error-msg {
+      color: #ff6b8b;
+      font-size: 0.8rem;
+      font-weight: 500;
+      min-height: 1.2rem;
+      margin-top: 4px;
+    }
+
+    .submit-btn {
+      background: linear-gradient(135deg, #0066cc, #00a3ff);
+      border: none;
+      border-radius: 40px;
+      padding: 1rem 2.5rem;
+      font-size: 1rem;
+      font-weight: 700;
+      color: #fff;
+      cursor: pointer;
+      transition: 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      letter-spacing: 0.03em;
+      box-shadow: 0 10px 25px -5px #00a3ff70;
+      justify-self: start;
+    }
+
+    .submit-btn:hover {
+      background: linear-gradient(135deg, #0077e6, #00b3ff);
+      box-shadow: 0 0 30px #00a3ff90;
+      transform: scale(1.02);
+    }
+
+    .form-success {
+      grid-column: 1 / -1;
+      background: #00cc8820;
+      border: 1px solid #00cc88;
+      color: #b0ffd0;
+      padding: 1rem 1.5rem;
+      border-radius: 40px;
+      font-weight: 500;
+      text-align: center;
+      margin-top: 0.5rem;
+    }
+
+    @media (max-width: 700px) {
+      body { padding: 1.2rem; }
+      .controls { border-radius: 30px; padding: 1rem; }
+      .contact-form { grid-template-columns: 1fr; }
+      .header { flex-direction: column; align-items: flex-start; gap: 1rem; }
+      .logo h1 { font-size: 1.8rem; }
+      .directory-grid { grid-template-columns: 1fr; }
+      .hero-overlay h2 { font-size: 1.6rem; }
+      .hero-overlay { padding: 0 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+<div class="app-wrapper">
+  <header class="header">
+    <div class="logo">
+      <h1><i class="fas fa-satellite-dish"></i> SA<span class="glow-text">Connect</span></h1>
+      <div class="badge">🌍 future directory</div>
+    </div>
+    <div class="badge" style="font-size:0.75rem;"><i class="fas fa-map-pin"></i> proudly South African</div>
+  </header>
+
+  <section class="hero-banner" id="heroBanner">
+    <div class="hero-loader" id="heroLoader"></div>
+    <div class="hero-overlay">
+      <h2>Discover Mzansi's finest</h2>
+      <p>From Soweto tech labs to Cape Town kitchens — explore the future of South Africa.</p>
+    </div>
+  </section>
+
+  <div class="controls">
+    <div class="search-box">
+      <i class="fas fa-search"></i>
+      <input type="text" id="searchInput" placeholder="Search businesses, tech hubs, crafts...">
+    </div>
+    <div class="filter-group">
+      <select id="categoryFilter" class="filter-select">
+        <option value="all">All categories</option>
+        <option value="favourites">⭐ Favourites only</option>
+        <option value="Tech">Tech</option>
+        <option value="Food">Food</option>
+        <option value="Art">Art</option>
+        <option value="Tourism">Tourism</option>
+        <option value="Education">Education</option>
+      </select>
+      <select id="locationFilter" class="filter-select">
+        <option value="all">All locations</option>
+        <option value="Johannesburg">Johannesburg</option>
+        <option value="Cape Town">Cape Town</option>
+        <option value="Durban">Durban</option>
+        <option value="Pretoria">Pretoria</option>
+        <option value="Stellenbosch">Stellenbosch</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="results-meta">
+    <span id="resultsCount">Loading directory…</span>
+    <div class="fav-badge">
+      <i class="fas fa-star" style="color:#ffc107;"></i>
+      <span class="fav-count" id="favCount">0</span>
+      <span>favourites</span>
+    </div>
+  </div>
+
+  <div id="directoryContainer" class="directory-grid"></div>
+
+  <section class="contact-section">
+    <h2 class="section-title">📡 Connect with us</h2>
+    <p class="contact-sub">Send a signal — we’ll get back within 24 hours.</p>
+    <form id="contactForm" class="contact-form" novalidate>
+      <div class="form-group">
+        <label for="name">Full name</label>
+        <input type="text" id="name" placeholder="e.g. Thandi Nkosi">
+        <div class="error-msg" id="nameError"></div>
+      </div>
+      <div class="form-group">
+        <label for="email">Email address</label>
+        <input type="email" id="email" placeholder="thandi@example.co.za">
+        <div class="error-msg" id="emailError"></div>
+      </div>
+      <div class="form-group full-width">
+        <label for="message">Message</label>
+        <textarea id="message" placeholder="Tell us about your project or inquiry..."></textarea>
+        <div class="error-msg" id="messageError"></div>
+      </div>
+      <button type="submit" class="submit-btn"><i class="fas fa-paper-plane"></i> Transmit</button>
+      <div id="formSuccess" class="form-success" style="display: none;">✅ Message sent! We'll be in touch.</div>
+    </form>
+  </section>
+</div>
+
+<script>
+  (function() {
+    'use strict';
+
+    // ============================================================
+    //  DIRECTORY DATA — 24 places, evenly balanced across 5 cities
+    //  Johannesburg: 5 | Cape Town: 5 | Durban: 5 | Pretoria: 5 | Stellenbosch: 4
+    // ============================================================
+    const directoryData = [
+      // ---------- JOHANNESBURG (5) ----------
+      { id: 1,  name: 'Soweto Tech Hub',         category: 'Tech',      location: 'Johannesburg', description: 'Innovation lab & coworking for young SA developers.',        photoId: 'photo-1498050108023-c5249f4df085' },
+      { id: 2,  name: 'Jozi Digital Nomads',     category: 'Tech',      location: 'Johannesburg', description: 'Community for remote tech workers in Braamfontein.',         photoId: 'photo-1519389950473-47ba0277781c' },
+      { id: 3,  name: 'YouthCode SA',            category: 'Education', location: 'Johannesburg', description: 'Free coding workshops for high school learners.',            photoId: 'photo-1509062522246-3755977927d7' },
+      { id: 4,  name: 'Maboneng Street Art',     category: 'Art',       location: 'Johannesburg', description: 'Vibrant murals & galleries in the Maboneng precinct.',       photoId: 'photo-1533158307587-828f0a76ef46' },
+      { id: 5,  name: 'Braamfontein Food Market',category: 'Food',      location: 'Johannesburg', description: 'Weekend food trucks, bunny chow & craft gin.',               photoId: 'photo-1555939594-58d7cb561ad1' },
+
+      // ---------- CAPE TOWN (5) ----------
+      { id: 6,  name: 'Cape Malay Kitchen',      category: 'Food',      location: 'Cape Town',    description: 'Authentic bobotie & koeksisters in Bo-Kaap.',                photoId: 'photo-1552332386-f8dd00dc2f85' },
+      { id: 7,  name: 'Mzansi AI Labs',          category: 'Tech',      location: 'Cape Town',    description: 'Building NLP tools for African languages.',                  photoId: 'photo-1555255707-c07966088b7b' },
+      { id: 8,  name: 'Table Mountain Treks',    category: 'Tourism',   location: 'Cape Town',    description: 'Guided sunrise hikes & cableway combos.',                    photoId: 'photo-1580060839134-75a5edca2e99' },
+      { id: 9,  name: 'Zeitz MOCAA Gallery',     category: 'Art',       location: 'Cape Town',    description: 'Contemporary African art in a converted silo.',              photoId: 'photo-1569336415962-a4bd9f69cd83' },
+      { id: 10, name: 'V&A Waterfront Academy',  category: 'Education', location: 'Cape Town',    description: 'Maritime & hospitality training at the harbour.',            photoId: 'photo-1523240795612-9a054b0db644' },
+
+      // ---------- DURBAN (5) ----------
+      { id: 11, name: 'Ubuntu Art Collective',   category: 'Art',       location: 'Durban',       description: 'Contemporary Zulu beadwork & township art.',                 photoId: 'photo-1541961017774-22349e4a1262' },
+      { id: 12, name: 'Bunny Chow Bar',          category: 'Food',      location: 'Durban',       description: 'Famous Durban curry served in a quarter loaf.',              photoId: 'photo-1567337710282-00832b415979' },
+      { id: 13, name: 'Durban Golden Mile',      category: 'Tourism',   location: 'Durban',       description: 'Beachfront promenade, surf & uShaka Marine World.',          photoId: 'photo-1507525428034-b723cf961d3e' },
+      { id: 14, name: 'KZN Coding School',       category: 'Education', location: 'Durban',       description: 'Full-stack dev bootcamps in Umhlanga.',                      photoId: 'photo-1517694712202-14dd9538aa97' },
+      { id: 15, name: 'Durban FinTech Lab',      category: 'Tech',      location: 'Durban',       description: 'Incubator for mobile-money & payment startups.',             photoId: 'photo-1563986768609-322da13575f3' },
+
+      // ---------- PRETORIA (5) ----------
+      { id: 16, name: 'Kruger Eco Tours',        category: 'Tourism',   location: 'Pretoria',     description: 'Safaris & sustainable bush experiences.',                    photoId: 'photo-1547471080-7cc2caa01a7e' },
+      { id: 17, name: 'Venda Craft Market',      category: 'Art',       location: 'Pretoria',     description: 'Handmade pottery & wood carvings from Limpopo.',             photoId: 'photo-1610701596007-11502861dcfa' },
+      { id: 18, name: 'Tshwane Tech Bridge',     category: 'Tech',      location: 'Pretoria',     description: 'GovTech & civic hacking space in Hatfield.',                 photoId: 'photo-1531482615713-2afd69097998' },
+      { id: 19, name: 'Capital Craft Beer Co.',  category: 'Food',      location: 'Pretoria',     description: 'Local craft brews & South African street food.',             photoId: 'photo-1436076863939-06870fe779c2' },
+      { id: 20, name: 'UP Innovation Academy',   category: 'Education', location: 'Pretoria',     description: 'University of Pretoria startup & entrepreneurship hub.',      photoId: 'photo-1524178232363-1fb2b075b655' },
+
+      // ---------- STELLENBOSCH (4) ----------
+      { id: 21, name: 'CodeX Academy',           category: 'Education', location: 'Stellenbosch', description: 'Full-stack bootcamps for underrepresented groups.',          photoId: 'photo-1517245386807-bb43f82c33c4' },
+      { id: 22, name: 'Stellenbosch Wine Lab',   category: 'Food',      location: 'Stellenbosch', description: 'Wine tasting & tech-driven viticulture.',                    photoId: 'photo-1506377247377-2a5b3b417ebb' },
+      { id: 23, name: 'Eikendal Art Studio',     category: 'Art',       location: 'Stellenbosch', description: 'Sculpture garden & contemporary SA artists.',                photoId: 'photo-1544967082-d9d25d867d66' },
+      { id: 24, name: 'Winelands AgriTech',      category: 'Tech',      location: 'Stellenbosch', description: 'Drone & IoT farming solutions for vineyards.',               photoId: 'photo-1560493676-04071c5f467b' },
+    ];
+
+    // ============================================================
+    //  IMAGE URL BUILDER
+    // ============================================================
+    function buildImageUrl(photoId, w = 600, h = 400) {
+      return `https://images.unsplash.com/${photoId}?auto=format&fit=crop&w=${w}&h=${h}&q=80`;
+    }
+
+    const HERO_IMAGE_URL = 'https://images.unsplash.com/photo-1580060839134-75a5edca2e99?auto=format&fit=crop&w=1600&h=600&q=80';
+
+    // ============================================================
+    //  DOM
+    // ============================================================
+    const container      = document.getElementById('directoryContainer');
+    const searchInput    = document.getElementById('searchInput');
+    const categoryFilter = document.getElementById('categoryFilter');
+    const locationFilter = document.getElementById('locationFilter');
+    const resultsCount   = document.getElementById('resultsCount');
+    const favCountSpan   = document.getElementById('favCount');
+    const heroBanner     = document.getElementById('heroBanner');
+    const heroLoader     = document.getElementById('heroLoader');
+
+    // ============================================================
+    //  STATE
+    // ============================================================
+    let favourites      = [];
+    let currentSearch   = '';
+    let currentCategory = 'all';
+    let currentLocation = 'all';
+
+    // ============================================================
+    //  HERO IMAGE
+    // ============================================================
+    function loadHeroImage() {
+      const img = document.createElement('img');
+      img.alt = 'Table Mountain, Cape Town';
+
+      img.onload = () => {
+        img.classList.add('loaded');
+        if (heroLoader) heroLoader.remove();
+      };
+      img.onerror = () => { if (heroLoader) heroLoader.remove(); };
+
+      img.src = HERO_IMAGE_URL;
+      heroBanner.insertBefore(img, heroBanner.firstChild);
+    }
+
+    // ============================================================
+    //  FAVOURITES
+    // ============================================================
+    function loadFavourites() {
+      try {
+        const stored = localStorage.getItem('sa_connect_favs');
+        if (stored) {
+          const parsed = JSON.parse(stored);
+          favourites = Array.isArray(parsed)
+            ? parsed.map(Number).filter(n => !isNaN(n))
+            : [];
+        } else {
+          favourites = [];
+        }
+      } catch (e) { favourites = []; }
+      updateFavCount();
+    }
+
+    function saveFavourites() {
+      try { localStorage.setItem('sa_connect_favs', JSON.stringify(favourites)); }
+      catch (e) { /* ignore */ }
+      updateFavCount();
+    }
+
+    function updateFavCount() {
+      if (favCountSpan) favCountSpan.textContent = favourites.length;
+    }
+
+    function toggleFavourite(id) {
+      if (favourites.includes(id)) {
+        favourites = favourites.filter(favId => favId !== id);
+      } else {
+        favourites.push(id);
+      }
+      saveFavourites();
+
+      // If user is currently viewing "Favourites only", re-render so unfavourited items disappear
+      if (currentCategory === 'favourites') {
+        renderDirectory();
+      } else {
+        // Just update the heart icon in place
+        const btn = container.querySelector(`[data-fav-id="${id}"]`);
+        if (btn) {
+          btn.classList.toggle('active', favourites.includes(id));
+        }
+      }
+    }
+
+    // ============================================================
+    //  FILTER
+    // ============================================================
+    function getFilteredData() {
+      return directoryData.filter(item => {
+        const q = currentSearch.toLowerCase();
+        const matchesSearch = currentSearch === '' ||
+          item.name.toLowerCase().includes(q) ||
+          item.description.toLowerCase().includes(q) ||
+          item.location.toLowerCase().includes(q) ||
+          item.category.toLowerCase().includes(q);
+
+        // Favourites-only special case
+        if (currentCategory === 'favourites') {
+          if (!favourites.includes(item.id)) return false;
+        } else if (currentCategory !== 'all') {
+          if (item.category !== currentCategory) return false;
+        }
+
+        const matchesLocation = currentLocation === 'all' || item.location === currentLocation;
+        return matchesSearch && matchesLocation;
+      });
+    }
+
+    // ============================================================
+    //  CARD HTML
+    // ============================================================
+    function buildCardHTML(item) {
+      const isFav = favourites.includes(item.id);
+      const imgUrl = buildImageUrl(item.photoId);
+
+      return `
+        <div class="card" data-id="${item.id}">
+          <div class="card-image-wrap">
+            <div class="img-fallback">
+              <i class="fas fa-image"></i>
+              <span>Loading image…</span>
+            </div>
+            <div class="img-loader" data-loader></div>
+            <img data-src="${imgUrl}" alt="${item.name}" loading="lazy" data-img>
+          </div>
+          <div class="card-body">
+            <div class="card-header">
+              <span class="card-category">${item.category}</span>
+              <button class="fav-btn ${isFav ? 'active' : ''}" data-fav-id="${item.id}" aria-label="Toggle favourite">
+                <i class="fas fa-star"></i>
+              </button>
+            </div>
+            <h3 class="card-title">${item.name}</h3>
+            <div class="card-location">
+              <i class="fas fa-location-dot"></i> ${item.location}
+            </div>
+            <p class="card-desc">${item.description}</p>
+          </div>
+        </div>
+      `;
+    }
+
+    // ============================================================
+    //  WIRE UP IMAGES
+    // ============================================================
+    function wireUpImages() {
+      container.querySelectorAll('img[data-img]').forEach(img => {
+        const wrapper  = img.closest('.card-image-wrap');
+        const loader   = wrapper.querySelector('[data-loader]');
+        const fallback = wrapper.querySelector('.img-fallback');
+
+        const handleLoad = () => {
+          img.classList.add('loaded');
+          if (loader) loader.remove();
+          if (fallback) fallback.remove();
+        };
+
+        const handleError = () => {
+          if (loader) loader.remove();
+          if (fallback) {
+            fallback.innerHTML = `
+              <i class="fas fa-triangle-exclamation"></i>
+              <span>Image unavailable</span>
+            `;
+          }
+        };
+
+        img.addEventListener('load', handleLoad);
+        img.addEventListener('error', handleError);
+        img.src = img.dataset.src;
+      });
+    }
+
+    // ============================================================
+    //  WIRE UP FAVOURITE BUTTONS
+    // ============================================================
+    function wireUpFavourites() {
+      container.querySelectorAll('[data-fav-id]').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          toggleFavourite(Number(btn.dataset.favId));
+        });
+      });
+    }
+
+    // ============================================================
+    //  RENDER
+    // ============================================================
+    function renderDirectory() {
+      const filtered = getFilteredData();
+
+      resultsCount.textContent =
+        `${filtered.length} ${filtered.length === 1 ? 'place' : 'places'} found`;
+
+      if (filtered.length === 0) {
+        const msg = currentCategory === 'favourites' && favourites.length === 0
+          ? 'You haven\'t starred any places yet. Tap the ⭐ on a card to save it here.'
+          : 'No spots match your filters. Try a different search or category.';
+
+        container.innerHTML = `
+          <div class="state-message">
+            <i class="fas fa-${currentCategory === 'favourites' ? 'star' : 'map-pin'}"></i>
+            <p>${msg}</p>
+          </div>`;
+        return;
+      }
+
+      container.innerHTML = filtered.map(buildCardHTML).join('');
+      wireUpImages();
+      wireUpFavourites();
+    }
+
+    // ============================================================
+    //  LOADING STATE
+    // ============================================================
+    function showLoadingState() {
+      container.innerHTML = `
+        <div class="state-message">
+          <div class="loading-spinner"></div>
+          <p>Scanning SA network…</p>
+        </div>`;
+      resultsCount.textContent = 'Loading…';
+    }
+
+    // ============================================================
+    //  FILTER EVENTS
+    // ============================================================
+    function updateFilters() {
+      currentSearch   = searchInput.value.trim();
+      currentCategory = categoryFilter.value;
+      currentLocation = locationFilter.value;
+      renderDirectory();
+    }
+
+    // ============================================================
+    //  CONTACT FORM
+    // ============================================================
+    function setupContactForm() {
+      const form         = document.getElementById('contactForm');
+      const nameInput    = document.getElementById('name');
+      const emailInput   = document.getElementById('email');
+      const messageInput = document.getElementById('message');
+      const nameError    = document.getElementById('nameError');
+      const emailError   = document.getElementById('emailError');
+      const messageError = document.getElementById('messageError');
+      const formSuccess  = document.getElementById('formSuccess');
+
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        nameError.textContent    = '';
+        emailError.textContent   = '';
+        messageError.textContent = '';
+        formSuccess.style.display = 'none';
+
+        let isValid = true;
+
+        const name = nameInput.value.trim();
+        if (name === '') {
+          nameError.textContent = 'Name is required.';
+          isValid = false;
+        } else if (name.length < 2) {
+          nameError.textContent = 'Enter a valid name (min 2 characters).';
+          isValid = false;
+        }
+
+        const email = emailInput.value.trim();
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (email === '') {
+          emailError.textContent = 'Email is required.';
+          isValid = false;
+        } else if (!emailPattern.test(email)) {
+          emailError.textContent = 'Please enter a valid email (e.g. name@domain.co.za).';
+          isValid = false;
+        }
+
+        const message = messageInput.value.trim();
+        if (message === '') {
+          messageError.textContent = 'Message cannot be empty.';
+          isValid = false;
+        } else if (message.length < 10) {
+          messageError.textContent = 'Message must be at least 10 characters.';
+          isValid = false;
+        }
+
+        if (isValid) {
+          formSuccess.style.display = 'block';
+          form.reset();
+          setTimeout(() => { formSuccess.style.display = 'none'; }, 4000);
+        }
+      });
+    }
+
+    // ============================================================
+    //  INIT
+    // ============================================================
+    function init() {
+      loadHeroImage();
+      loadFavourites();
+      showLoadingState();
+
+      searchInput.addEventListener('input', updateFilters);
+      categoryFilter.addEventListener('change', updateFilters);
+      locationFilter.addEventListener('change', updateFilters);
+
+      setupContactForm();
+
+      setTimeout(renderDirectory, 500);
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', init);
+    } else {
+      init();
+    }
+  })();
+</script>
+</body>
+</html>
