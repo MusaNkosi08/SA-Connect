@@ -11,6 +11,3 @@ Durban, Pretoria and Stellenbosch by category and location. Cards load real,
 location-matched images from Unsplash, and users can star favourites that persist 
 via localStorage. Includes a "⭐ Favourites only" filter, plus proper loading, 
 empty and error states — and a validated contact form.
-
-Built as a Week 3 JavaScript practical: dynamic rendering, filtering, form 
-validation and client-side storage.
