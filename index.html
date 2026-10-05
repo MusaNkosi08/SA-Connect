@@ -278,6 +278,13 @@
       transform: translateY(-4px);
     }
 
+    .card { cursor: pointer; }
+
+    .card:focus-visible {
+      outline: 2px solid #00e0ff;
+      outline-offset: 4px;
+    }
+
     /* CARD IMAGE */
     .card-image-wrap {
       position: relative;
@@ -570,6 +577,258 @@
       margin-top: 0.5rem;
     }
 
+    /* CITY PULSE */
+    .city-pulse {
+      position: relative;
+      overflow: hidden;
+      margin: 0 0 2rem;
+      padding: 1.25rem 1.4rem 1.4rem;
+      border: 1px solid rgba(255, 193, 7, 0.3);
+      border-radius: 24px;
+      background: linear-gradient(110deg, rgba(11, 31, 54, 0.95), rgba(16, 25, 56, 0.82));
+      box-shadow: 0 16px 35px -20px rgba(255, 193, 7, 0.55);
+    }
+
+    .city-pulse::after {
+      content: "";
+      position: absolute;
+      width: 180px;
+      height: 180px;
+      right: -70px;
+      top: -95px;
+      border: 1px solid rgba(255, 193, 7, 0.35);
+      border-radius: 50%;
+      box-shadow: 0 0 0 18px rgba(255, 193, 7, 0.04), 0 0 0 38px rgba(255, 193, 7, 0.03);
+      pointer-events: none;
+    }
+
+    .pulse-heading {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .pulse-heading h2 { font-size: 0.82rem; text-transform: uppercase; letter-spacing: 0.14em; color: #ffd76a; }
+    .pulse-heading p { color: #8bb6d6; font-size: 0.82rem; }
+
+    .city-pulse-list {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 0.65rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .city-pulse-btn {
+      min-width: 0;
+      padding: 0.8rem 0.65rem;
+      border: 1px solid rgba(0, 180, 255, 0.28);
+      border-radius: 14px;
+      background: rgba(3, 15, 32, 0.58);
+      color: #c6e2f3;
+      text-align: left;
+      cursor: pointer;
+      transition: 0.2s ease;
+    }
+
+    .city-pulse-btn:hover, .city-pulse-btn.active {
+      border-color: #00e0ff;
+      background: rgba(0, 117, 148, 0.3);
+      color: #fff;
+      transform: translateY(-2px);
+    }
+
+    .city-pulse-btn strong { display: block; font-size: 0.9rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .city-pulse-btn span { display: block; margin-top: 0.25rem; color: #7aa9c4; font-size: 0.72rem; }
+    .city-pulse-btn.active span { color: #9defff; }
+
+    /* CITY EXPLORER */
+    .city-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 20;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      background: rgba(1, 5, 15, 0.78);
+      backdrop-filter: blur(10px);
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.25s ease, visibility 0.25s ease;
+    }
+
+    .city-modal.open { opacity: 1; visibility: visible; }
+
+    .city-panel {
+      width: min(900px, 100%);
+      max-height: min(720px, 92vh);
+      overflow: auto;
+      background: #07172b;
+      border: 1px solid rgba(0, 224, 255, 0.5);
+      border-radius: 28px;
+      box-shadow: 0 25px 80px rgba(0, 0, 0, 0.65), 0 0 35px rgba(0, 224, 255, 0.2);
+      transform: translateY(18px) scale(0.98);
+      transition: transform 0.25s ease;
+    }
+
+    .city-modal.open .city-panel { transform: translateY(0) scale(1); }
+
+    .city-hero {
+      min-height: 250px;
+      position: relative;
+      display: flex;
+      align-items: flex-end;
+      padding: 2rem;
+      background-size: cover;
+      background-position: center;
+    }
+
+    .city-hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(0deg, #07172b 0%, rgba(7, 23, 43, 0.2) 90%);
+    }
+
+    .city-hero-content { position: relative; z-index: 1; }
+    .city-hero h2 { font-size: clamp(2rem, 5vw, 3.2rem); margin-bottom: 0.25rem; }
+    .city-hero p { color: #b8d4e8; max-width: 600px; }
+
+    .modal-close {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      z-index: 2;
+      width: 40px;
+      height: 40px;
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      border-radius: 50%;
+      background: rgba(3, 6, 20, 0.65);
+      color: #fff;
+      cursor: pointer;
+      font-size: 1.1rem;
+    }
+
+    .modal-close:hover { border-color: #00e0ff; color: #00e0ff; }
+
+    .city-content { padding: 1.5rem 2rem 2rem; }
+
+    .city-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.8rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .city-stat {
+      padding: 1rem;
+      border: 1px solid rgba(0, 224, 255, 0.22);
+      border-radius: 16px;
+      background: rgba(0, 30, 60, 0.5);
+    }
+
+    .city-stat strong { display: block; color: #a0f0ff; font-size: 1.5rem; }
+    .city-stat span { color: #7aa9c4; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.05em; }
+    .city-content h3 { color: #fff; margin-bottom: 0.75rem; }
+
+    .place-detail-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(280px, 0.9fr);
+      gap: 1.25rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .place-brief, .place-location {
+      padding: 1.2rem;
+      border: 1px solid rgba(0, 224, 255, 0.22);
+      border-radius: 18px;
+      background: rgba(0, 30, 60, 0.42);
+    }
+
+    .place-brief p { color: #b8d0e0; line-height: 1.7; }
+    .place-location h3 { display: flex; align-items: center; gap: 0.5rem; }
+    .place-address { color: #b8d0e0; font-size: 0.9rem; margin-bottom: 0.9rem; }
+    .place-address i { color: #00e0ff; margin-right: 0.35rem; }
+
+    .place-map {
+      width: 100%;
+      min-height: 190px;
+      border: 1px solid rgba(0, 224, 255, 0.25);
+      border-radius: 14px;
+      display: block;
+      background: #0a1a30;
+    }
+
+    .place-actions { display: flex; flex-wrap: wrap; gap: 0.65rem; margin-top: 0.9rem; }
+    .place-action {
+      border: 1px solid #00e0ff;
+      border-radius: 24px;
+      padding: 0.6rem 0.9rem;
+      background: rgba(0, 224, 255, 0.1);
+      color: #a0f0ff;
+      font: inherit;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+    }
+    .place-action:hover { background: rgba(0, 224, 255, 0.22); }
+    .place-action.secondary { border-color: rgba(255, 193, 7, 0.7); color: #ffd76a; }
+
+    .city-kicker {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin: 0.5rem 0 1.5rem;
+    }
+
+    .city-kicker span {
+      padding: 0.3rem 0.7rem;
+      border: 1px solid rgba(255, 193, 7, 0.45);
+      border-radius: 20px;
+      color: #ffd76a;
+      font-size: 0.74rem;
+    }
+
+    .city-action {
+      margin-top: 1.4rem;
+      border: 1px solid #00e0ff;
+      border-radius: 30px;
+      padding: 0.7rem 1rem;
+      background: rgba(0, 224, 255, 0.1);
+      color: #a0f0ff;
+      font: inherit;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .city-action:hover { background: rgba(0, 224, 255, 0.22); }
+
+    .related-places {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 0.75rem;
+    }
+
+    .related-place {
+      text-align: left;
+      padding: 1rem;
+      border: 1px solid rgba(0, 180, 255, 0.25);
+      border-radius: 14px;
+      background: rgba(10, 25, 45, 0.75);
+      color: #eef5ff;
+      cursor: pointer;
+    }
+
+    .related-place:hover { border-color: #00e0ff; background: rgba(0, 75, 105, 0.35); }
+    .related-place strong { display: block; margin-bottom: 0.25rem; }
+    .related-place span { color: #7ab3d4; font-size: 0.82rem; }
+
+    body.modal-open { overflow: hidden; }
+
     @media (max-width: 700px) {
       body { padding: 1.2rem; }
       .controls { border-radius: 30px; padding: 1rem; }
@@ -579,6 +838,13 @@
       .directory-grid { grid-template-columns: 1fr; }
       .hero-overlay h2 { font-size: 1.6rem; }
       .hero-overlay { padding: 0 1.5rem; }
+      .city-modal { padding: 0.75rem; }
+      .city-content { padding: 1.25rem; }
+      .city-stats { grid-template-columns: 1fr; }
+      .place-detail-grid { grid-template-columns: 1fr; }
+      .pulse-heading { align-items: flex-start; flex-direction: column; gap: 0.25rem; }
+      .city-pulse-list { display: flex; overflow-x: auto; padding-bottom: 0.25rem; }
+      .city-pulse-btn { flex: 0 0 138px; }
     }
   </style>
 </head>
@@ -626,6 +892,14 @@
     </div>
   </div>
 
+  <section class="city-pulse" aria-labelledby="cityPulseTitle">
+    <div class="pulse-heading">
+      <h2 id="cityPulseTitle"><i class="fas fa-signal"></i> City pulse</h2>
+      <p>Jump into a local signal</p>
+    </div>
+    <div class="city-pulse-list" id="cityPulseList"></div>
+  </section>
+
   <div class="results-meta">
     <span id="resultsCount">Loading directory…</span>
     <div class="fav-badge">
@@ -636,6 +910,40 @@
   </div>
 
   <div id="directoryContainer" class="directory-grid"></div>
+
+  <div class="city-modal" id="cityModal" role="dialog" aria-modal="true" aria-labelledby="cityModalTitle" aria-hidden="true">
+    <div class="city-panel">
+      <div class="city-hero" id="cityHero">
+        <button class="modal-close" id="closeCityModal" type="button" aria-label="Close city details"><i class="fas fa-xmark"></i></button>
+        <div class="city-hero-content">
+          <h2 id="cityModalTitle">Explore the city</h2>
+          <p id="cityModalIntro"></p>
+        </div>
+      </div>
+      <div class="city-content">
+        <div class="city-stats" id="cityStats"></div>
+        <div class="city-kicker" id="cityKicker"></div>
+        <div class="place-detail-grid">
+          <article class="place-brief">
+            <h3 id="selectedPlaceTitle">Featured place</h3>
+            <p id="selectedPlaceDescription"></p>
+          </article>
+          <article class="place-location">
+            <h3><i class="fas fa-map-location-dot"></i> Find this place</h3>
+            <p class="place-address" id="selectedPlaceAddress"></p>
+            <iframe class="place-map" id="selectedPlaceMap" title="Map showing the selected place" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            <div class="place-actions">
+              <a class="place-action" id="directionsLink" target="_blank" rel="noopener"><i class="fas fa-diamond-turn-right"></i> Directions</a>
+              <button class="place-action secondary" id="sharePlaceButton" type="button"><i class="fas fa-share-nodes"></i> Share place</button>
+            </div>
+          </article>
+        </div>
+        <h3>More to discover</h3>
+        <div class="related-places" id="relatedPlaces"></div>
+        <button class="city-action" id="browseCityButton" type="button"><i class="fas fa-compass"></i> Browse all places in this city</button>
+      </div>
+    </div>
+  </div>
 
   <section class="contact-section">
     <h2 class="section-title">📡 Connect with us</h2>
@@ -726,6 +1034,22 @@
     const favCountSpan   = document.getElementById('favCount');
     const heroBanner     = document.getElementById('heroBanner');
     const heroLoader     = document.getElementById('heroLoader');
+    const cityModal      = document.getElementById('cityModal');
+    const cityHero       = document.getElementById('cityHero');
+    const cityModalTitle = document.getElementById('cityModalTitle');
+    const cityModalIntro = document.getElementById('cityModalIntro');
+    const cityStats      = document.getElementById('cityStats');
+    const cityKicker     = document.getElementById('cityKicker');
+    const cityPulseList  = document.getElementById('cityPulseList');
+    const browseCityButton = document.getElementById('browseCityButton');
+    const selectedPlaceTitle = document.getElementById('selectedPlaceTitle');
+    const selectedPlaceDescription = document.getElementById('selectedPlaceDescription');
+    const selectedPlaceAddress = document.getElementById('selectedPlaceAddress');
+    const selectedPlaceMap = document.getElementById('selectedPlaceMap');
+    const directionsLink = document.getElementById('directionsLink');
+    const sharePlaceButton = document.getElementById('sharePlaceButton');
+    const relatedPlaces  = document.getElementById('relatedPlaces');
+    const closeCityModal = document.getElementById('closeCityModal');
 
     // ============================================================
     //  STATE
@@ -734,6 +1058,39 @@
     let currentSearch   = '';
     let currentCategory = 'all';
     let currentLocation = 'all';
+    let lastFocusedCard = null;
+
+    const cityProfiles = {
+      Johannesburg: { intro: 'The energetic heart of Gauteng, where culture, startups and street life meet.', fact: 'City of Gold', photoId: 'photo-1518005020951-eccb494ad742' },
+      'Cape Town': { intro: 'A coastal creative capital framed by mountain, ocean and bold new ideas.', fact: 'Mother City', photoId: 'photo-1503264116251-35a269479413' },
+      Durban: { intro: 'A warm Indian Ocean city known for its surf, spice, art and easygoing energy.', fact: 'Golden Mile', photoId: 'photo-1507525428034-b723cf961d3e' },
+      Pretoria: { intro: 'Jacaranda-lined avenues, civic innovation and a growing creative scene.', fact: 'Jacaranda City', photoId: 'photo-1591190697783-0b9f5d0f0d68' },
+      Stellenbosch: { intro: 'A historic winelands town blending research, design, food and mountain landscapes.', fact: 'Winelands', photoId: 'photo-1506377247377-2a5b3b417ebb' }
+    };
+
+    const cityAddresses = {
+      Johannesburg: 'Braamfontein / Maboneng precinct, Johannesburg, Gauteng',
+      'Cape Town': 'City Bowl / V&A Waterfront, Cape Town, Western Cape',
+      Durban: 'Central Durban / Golden Mile, Durban, KwaZulu-Natal',
+      Pretoria: 'Hatfield / central Pretoria, Gauteng',
+      Stellenbosch: 'Stellenbosch town centre, Western Cape'
+    };
+
+    const categoryBriefs = {
+      Tech: 'This is a hands-on space for people building, testing and sharing practical technology. Visitors can expect a collaborative atmosphere, useful local connections and an opportunity to see South African ideas moving from concept to real-world impact.',
+      Food: 'The experience is rooted in local flavour and community. It is a great stop for discovering regional ingredients, meeting independent makers and enjoying a distinctly South African take on familiar food and hospitality.',
+      Art: 'This creative destination brings South African stories to life through makers, artists and public-facing work. Spend time looking closely, asking questions and supporting the people shaping the local visual culture.',
+      Tourism: 'The experience offers an accessible way to connect with the landscape, history and character of its region. Plan enough time to explore at an easy pace and check conditions before setting out.',
+      Education: 'This learning-focused space helps people build confidence, skills and connections. It is designed around practical growth, making it a useful destination for learners, mentors and curious visitors.'
+    };
+
+    function buildPlaceBrief(item) {
+      return `${item.description} ${categoryBriefs[item.category]} Located in ${item.location}, ${item.name} is part of SA Connect’s curated network of places worth discovering.`;
+    }
+
+    function buildPlaceAddress(item) {
+      return `${item.name}, ${cityAddresses[item.location]}`;
+    }
 
     // ============================================================
     //  HERO IMAGE
@@ -750,6 +1107,16 @@
 
       img.src = HERO_IMAGE_URL;
       heroBanner.insertBefore(img, heroBanner.firstChild);
+    }
+
+    function renderCityPulse() {
+      cityPulseList.innerHTML = Object.keys(cityProfiles).map(city => {
+        const count = directoryData.filter(item => item.location === city).length;
+        const active = currentLocation === city ? ' active' : '';
+        return `<button class="city-pulse-btn${active}" type="button" data-city="${city}">
+          <strong>${city}</strong><span>${count} places · explore</span>
+        </button>`;
+      }).join('');
     }
 
     // ============================================================
@@ -832,7 +1199,7 @@
       const imgUrl = buildImageUrl(item.photoId);
 
       return `
-        <div class="card" data-id="${item.id}">
+        <div class="card" data-id="${item.id}" tabindex="0" role="button" aria-label="Explore ${item.name} in ${item.location}">
           <div class="card-image-wrap">
             <div class="img-fallback">
               <i class="fas fa-image"></i>
@@ -901,6 +1268,70 @@
       });
     }
 
+    function openCityModal(item) {
+      const profile = cityProfiles[item.location];
+      const cityPlaces = directoryData.filter(place => place.location === item.location);
+      const categoryCount = new Set(cityPlaces.map(place => place.category)).size;
+
+      lastFocusedCard = container.querySelector(`[data-id="${item.id}"]`);
+      cityHero.style.backgroundImage = `url("${buildImageUrl(profile.photoId, 1000, 500)}")`;
+      cityModalTitle.textContent = item.location;
+      cityModalIntro.textContent = `${item.name} · ${profile.intro}`;
+      selectedPlaceTitle.textContent = item.name;
+      selectedPlaceDescription.textContent = buildPlaceBrief(item);
+      const address = buildPlaceAddress(item);
+      const mapQuery = encodeURIComponent(`${item.name}, ${item.location}, South Africa`);
+      selectedPlaceAddress.innerHTML = `<i class="fas fa-location-dot"></i>${address}`;
+      selectedPlaceMap.src = `https://www.google.com/maps?q=${mapQuery}&output=embed`;
+      selectedPlaceMap.title = `Map showing ${item.name} in ${item.location}`;
+      directionsLink.href = `https://www.google.com/maps/dir/?api=1&destination=${mapQuery}`;
+      sharePlaceButton.dataset.placeName = item.name;
+      sharePlaceButton.dataset.placeAddress = address;
+      cityKicker.innerHTML = cityPlaces
+        .map(place => place.category)
+        .filter((category, index, categories) => categories.indexOf(category) === index)
+        .map(category => `<span>${category}</span>`)
+        .join('');
+      cityStats.innerHTML = `
+        <div class="city-stat"><strong>${cityPlaces.length}</strong><span>featured places</span></div>
+        <div class="city-stat"><strong>${categoryCount}</strong><span>categories to explore</span></div>
+        <div class="city-stat"><strong>${profile.fact}</strong><span>city signal</span></div>
+      `;
+      relatedPlaces.innerHTML = cityPlaces
+        .filter(place => place.id !== item.id)
+        .map(place => `<button class="related-place" type="button" data-related-id="${place.id}"><strong>${place.name}</strong><span>${place.category} · View details</span></button>`)
+        .join('');
+
+      cityModal.classList.add('open');
+      cityModal.setAttribute('aria-hidden', 'false');
+      document.body.classList.add('modal-open');
+      browseCityButton.dataset.city = item.location;
+      closeCityModal.focus();
+    }
+
+    function closeCityExplorer() {
+      cityModal.classList.remove('open');
+      cityModal.setAttribute('aria-hidden', 'true');
+      document.body.classList.remove('modal-open');
+      if (lastFocusedCard) lastFocusedCard.focus();
+    }
+
+    function wireUpCards() {
+      container.querySelectorAll('.card').forEach(card => {
+        const open = () => {
+          const item = directoryData.find(place => place.id === Number(card.dataset.id));
+          if (item) openCityModal(item);
+        };
+        card.addEventListener('click', open);
+        card.addEventListener('keydown', event => {
+          if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault();
+            open();
+          }
+        });
+      });
+    }
+
     // ============================================================
     //  RENDER
     // ============================================================
@@ -926,6 +1357,7 @@
       container.innerHTML = filtered.map(buildCardHTML).join('');
       wireUpImages();
       wireUpFavourites();
+      wireUpCards();
     }
 
     // ============================================================
@@ -947,6 +1379,7 @@
       currentSearch   = searchInput.value.trim();
       currentCategory = categoryFilter.value;
       currentLocation = locationFilter.value;
+      renderCityPulse();
       renderDirectory();
     }
 
@@ -1021,7 +1454,65 @@
       categoryFilter.addEventListener('change', updateFilters);
       locationFilter.addEventListener('change', updateFilters);
 
+      cityPulseList.addEventListener('click', event => {
+        const cityButton = event.target.closest('[data-city]');
+        if (!cityButton) return;
+        locationFilter.value = cityButton.dataset.city;
+        updateFilters();
+        document.getElementById('directoryContainer').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+
+      browseCityButton.addEventListener('click', () => {
+        locationFilter.value = browseCityButton.dataset.city;
+        closeCityExplorer();
+        updateFilters();
+        document.getElementById('directoryContainer').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+
+      sharePlaceButton.addEventListener('click', async () => {
+        const placeName = sharePlaceButton.dataset.placeName;
+        const placeAddress = sharePlaceButton.dataset.placeAddress;
+        const shareData = {
+          title: `${placeName} · SA Connect`,
+          text: `${placeName} — ${placeAddress}`,
+          url: window.location.href
+        };
+
+        try {
+          if (navigator.share) {
+            await navigator.share(shareData);
+          } else if (navigator.clipboard) {
+            await navigator.clipboard.writeText(`${shareData.title}\n${shareData.text}\n${shareData.url}`);
+            sharePlaceButton.innerHTML = '<i class="fas fa-check"></i> Copied link';
+            setTimeout(() => {
+              sharePlaceButton.innerHTML = '<i class="fas fa-share-nodes"></i> Share place';
+            }, 2200);
+          } else {
+            sharePlaceButton.innerHTML = '<i class="fas fa-triangle-exclamation"></i> Copy unavailable';
+          }
+        } catch (error) {
+          if (error.name !== 'AbortError') {
+            sharePlaceButton.innerHTML = '<i class="fas fa-triangle-exclamation"></i> Share unavailable';
+          }
+        }
+      });
+
+      closeCityModal.addEventListener('click', closeCityExplorer);
+      cityModal.addEventListener('click', event => {
+        if (event.target === cityModal) closeCityExplorer();
+        const relatedButton = event.target.closest('[data-related-id]');
+        if (relatedButton) {
+          const item = directoryData.find(place => place.id === Number(relatedButton.dataset.relatedId));
+          if (item) openCityModal(item);
+        }
+      });
+      document.addEventListener('keydown', event => {
+        if (event.key === 'Escape' && cityModal.classList.contains('open')) closeCityExplorer();
+      });
+
       setupContactForm();
+
+      renderCityPulse();
 
       setTimeout(renderDirectory, 500);
     }
